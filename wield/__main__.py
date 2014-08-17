@@ -1,7 +1,9 @@
 #! /usr/bin/env python
+from __future__ import absolute_import  # noqa
 
-import sys
-import argparse
+# import sys
+# import argparse
+
 
 """
 from redmine import Redmine
@@ -136,7 +138,16 @@ class App(object):
         return project
 """
 
+
+class App(object):
+
+    def __init__(self, *args, **kwargs):
+        from core.config import ConfigurationFile
+
+        ConfigurationFile().ensure_directory_exist()
+
+        from models import base
+        base.Model()
+
 if __name__ == '__main__':
-    # app = App()
-    from models import base
-    base.Model()
+    app = App()
