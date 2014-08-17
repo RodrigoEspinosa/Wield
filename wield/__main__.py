@@ -2,8 +2,11 @@
 from __future__ import absolute_import  # noqa
 
 # import sys
-# import argparse
+import argparse
 
+
+from core.config import ConfigurationFile
+from models.base import Borg
 
 """
 from redmine import Redmine
@@ -139,15 +142,39 @@ class App(object):
 """
 
 
-class App(object):
+class App(Borg):
 
     def __init__(self, *args, **kwargs):
-        from core.config import ConfigurationFile
-
         ConfigurationFile().ensure_directory_exist()
 
         from models import base
         base.Model()
+
+        self.create_command_parser().parse_args()
+
+        super(App, self).__init__(*args, **kwargs)
+
+    def autodiscover_commands(self):
+        import commands
+
+        modules = map(__import__, ['commands.' + c for c in commands.__all__])
+
+        response = []
+        response.append(modules[0].git.GitCommand)
+
+        return response
+
+    def create_command_parser(self):
+        # Create the parser and subparser instance
+        parser = argparse.ArgumentParser()
+        subparsers = parser.add_subparsers()
+
+        commands = self.autodiscover_commands()
+
+        for command in commands:
+            command(subparsers)
+
+        return parser
 
 if __name__ == '__main__':
     app = App()
