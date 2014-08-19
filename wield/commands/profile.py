@@ -1,4 +1,5 @@
 from commands.base import BaseCommand, action
+from models.profile import Profile
 
 
 class ProfileCommand(BaseCommand):
@@ -10,4 +11,4 @@ class ProfileCommand(BaseCommand):
 
     @action
     def new():
-        raise NotImplementedError()
+        Profile.create(name='Rodrigo')
