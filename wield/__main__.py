@@ -147,10 +147,8 @@ class App(Borg):
     def __init__(self, *args, **kwargs):
         ConfigurationFile().ensure_directory_exist()
 
-        from models import base
-        base.Model()
-
-        self.create_command_parser().parse_args()
+        call_to_action = self.create_command_parser().parse_args()
+        call_to_action.func(call_to_action)
 
         super(App, self).__init__(*args, **kwargs)
 
@@ -161,6 +159,7 @@ class App(Borg):
 
         response = []
         response.append(modules[0].git.GitCommand)
+        response.append(modules[0].profile.ProfileCommand)
 
         return response
 

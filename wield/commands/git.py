@@ -1,3 +1,4 @@
+from commands.base import BaseCommand
 """
 from wield.commands import BaseCommand
 from wield.core.git import Git
@@ -17,11 +18,9 @@ class GitCommand(BaseCommand):
 """
 
 
-class GitCommand(object):
+class GitCommand(BaseCommand):
 
     def __init__(self, parser):
         subparser = parser.add_parser('git')
-        subparser.add_argument('option')
-
-
-__all__ = GitCommand
+        subparser.add_argument('option', nargs='*')
+        subparser.set_defaults(func=self.call_to_action)
