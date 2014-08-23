@@ -28,7 +28,6 @@ class Model(object):
 
         with open(absolute_path, open_mode) as json_data:
             if create:
-                print self.__json_model
                 json_data.write(self.__json_model)
             else:
                 self.__dict_file = json.loads(json_data)

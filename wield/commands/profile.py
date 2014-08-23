@@ -1,5 +1,6 @@
-from commands.base import BaseCommand, action
 from models.profile import Profile
+from messages.profile import ProfileMessages
+from commands.base import BaseCommand, action
 
 
 class ProfileCommand(BaseCommand):
@@ -10,5 +11,10 @@ class ProfileCommand(BaseCommand):
         subparser.set_defaults(func=self.call_to_action)
 
     @action
-    def new():
-        Profile.create(name='Rodrigo')
+    def new(cls):
+        response = ProfileMessages.create_prompt()
+
+        if 'name' not in response:
+            response['name'] = 'default'
+
+        Profile.create(**response)
