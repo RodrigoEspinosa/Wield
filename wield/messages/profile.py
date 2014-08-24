@@ -29,3 +29,12 @@ class ProfileMessages(BaseMessages):
 
         # Return the response dictonary
         return response
+
+    @classmethod
+    def list(cls, profiles):
+        # Exclude the pass attribute from the profile list
+        for p in profiles:
+            del p['password']
+
+        # Print a table with every profile
+        return cls.table(profiles)

@@ -92,7 +92,14 @@ class Model(object):
 
     @classmethod
     def all(cls):
-        pass
+        # Create a new instance of the current model class
+        instance = cls()
+
+        # Get (or create) the json file
+        instance.__get_or_create_file()
+
+        # Return the dictionary of all data
+        return instance.__dict_file
 
 
 class Borg(object):

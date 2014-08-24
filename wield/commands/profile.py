@@ -18,3 +18,8 @@ class ProfileCommand(BaseCommand):
             response['name'] = 'default'
 
         Profile.create(**response)
+
+    @action
+    def list(cls):
+        # Print a table list with every profile
+        ProfileMessages.list(Profile.all())
