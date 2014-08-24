@@ -1,3 +1,5 @@
+from getpass import getpass
+
 from colorama import Fore, Style
 
 
@@ -26,16 +28,56 @@ class BaseMessages(object):
         return val not in 'no'
 
     @classmethod
+    def prompt(cls, func, msg, required=True, expected_type=str):
+        while True:
+            # Prompt the function with his message
+            response = func(msg)
+
+            # Check if the input is not empty
+            is_empty = response.strip() == ''
+            is_expected_type = response is expected_type
+
+            # If required is True, repeat until the response is not empty
+            # and has the expected type
+            if not required or not (is_empty or is_expected_type):
+                # Exit the loop
+                break
+
+            elif is_empty:
+                # Print the empty response error
+                cls.error('The response is required')
+
+            elif is_expected_type:
+                # Print the not expected type error
+                cls.error('The response is not a {}'.format(expected_type))
+
+        # Return the user response
+        return response
+
+    @classmethod
     def question(cls, msg, default=None, expected_type=str):
-        question = raw_input(msg)
+        # Append the question ending to the message
+        msg += ': '
+        return cls.prompt(raw_input, msg)
 
-        if question.strip() == '':
-            return default
+    @classmethod
+    def question_url(cls, msg, default=None):
+        # Prompt the question and get the user response
+        response = cls.question(msg, default)
 
-        if question.strip() is expected_type:
-            return question.strip()
-        else:
-            cls.error('The response is not a {}'.format(expected_type))
+        # Check if the response starts with a http or https protocol
+        if not response.startswith(('http://', 'https://')):
+            # Add http as default protocol for the response
+            response = 'http://' + response
+
+        # Return the corrected response
+        return response
+
+    @classmethod
+    def password(cls, msg, required=True):
+        # Append the question ending to the message
+        msg += ': '
+        return cls.prompt(getpass, msg, required)
 
     @classmethod
     def choose(cls, msg, options):
