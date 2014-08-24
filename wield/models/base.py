@@ -30,7 +30,7 @@ class Model(object):
             if create:
                 json_data.write(self.__json_model)
             else:
-                self.__dict_file = json.loads(json_data)
+                self.__dict_file = json.load(json_data)
 
             json_data.close()
 
@@ -89,6 +89,10 @@ class Model(object):
     @classmethod
     def delete(cls, *args, **kwargs):
         cls.get(*args, **kwargs).remove()
+
+    @classmethod
+    def all(cls):
+        pass
 
 
 class Borg(object):
