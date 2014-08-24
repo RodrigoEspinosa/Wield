@@ -1,6 +1,7 @@
 from getpass import getpass
 
 from colorama import Fore, Style
+from messages import console
 
 
 class BaseMessages(object):
@@ -78,6 +79,32 @@ class BaseMessages(object):
         # Append the question ending to the message
         msg += ': '
         return cls.prompt(getpass, msg, required)
+
+    @classmethod
+    def table(cls, data):
+        """ Based on https://gist.github.com/lonetwin/4721748 """
+
+        # Get the console terminal size
+        width, height = console.getTerminalSize()
+
+        # Extend the headers with values in a list
+        data.extend([i.values() for i in data])
+
+        # - figure out column widths
+        widths = [len(max(columns, key=len)) for columns in zip(*data)]
+
+        # - print the header
+        header, data = data[0], data[1:]
+        print(' | '.join(format(title, '%ds' % width)
+              for width, title in zip(widths, header)))
+
+        # - print the separator
+        print('-+-'.join('-' * width for width in widths))
+
+        # - print the data
+        for row in data:
+            print(' | '.join(format(cdata, '%ds' % width)
+                  for width, cdata in zip(widths, row)))
 
     @classmethod
     def choose(cls, msg, options):
