@@ -12,6 +12,7 @@ class ProfileCommand(BaseCommand):
 
     @action
     def new(cls):
+        """This is the new command"""
         response = ProfileMessages.create_prompt()
 
         if 'name' not in response:
@@ -21,5 +22,6 @@ class ProfileCommand(BaseCommand):
 
     @action
     def list(cls):
+        """This is the list command"""
         # Print a table list with every profile
         ProfileMessages.list(Profile.all())

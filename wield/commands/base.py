@@ -1,6 +1,14 @@
+# Initialize the actions descriptions as an empty list
+actions_list = []
+
+
+# Action decorator for command methods
 def action(func=None):
     if func is None:
         return func
+
+    # Append the command description to the actions list
+    actions_list.append((func.__name__, func.__doc__))
 
     # Set the function to be a class method
     return classmethod(func)
@@ -14,7 +22,10 @@ class BaseCommand(object):
 
     @action
     def help(cls):
-        print 'help'
+        """Print this message"""
+        for name, help in actions_list:
+            if hasattr(cls, name):
+                print '{} - {}'.format(name, help)
 
     def call_to_action(self, action):
         # Check if there is no option selected and the class has a help method

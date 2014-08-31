@@ -1,4 +1,5 @@
-from commands.base import BaseCommand
+from commands.base import BaseCommand, action
+
 """
 from wield.commands import BaseCommand
 from wield.core.git import Git
@@ -24,3 +25,9 @@ class GitCommand(BaseCommand):
         subparser = parser.add_parser('git')
         subparser.add_argument('option', nargs='*')
         subparser.set_defaults(func=self.call_to_action)
+
+
+    @action
+    def pull():
+        """Git command"""
+        print 'hola'
