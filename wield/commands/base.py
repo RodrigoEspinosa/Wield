@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from messages.help import HelpMessages
 
 # Initialize the actions descriptions as an empty list
@@ -31,7 +33,7 @@ class BaseCommand(object):
             # Check if the command exists on the current class
             if hasattr(cls, name):
                 # Print the commmand with the help command format
-                print HelpMessages.command_help(name, help)
+                print(HelpMessages.command_help(name, help))
 
     def call_to_action(self, action):
         # Check if there is no option selected and the class has a help method
